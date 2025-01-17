@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  database:
+    container_name: database
+    image: kartoza/postgis:13.0
+    volumes:
+      - dbdata:/var/lib/postgresql
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=test
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASS=postgres
+
+  inject-data:
+    container_name: inject-data
+    image: jterry64/inject-data:0.1
+    environment:
+      - POSTGRES_DB=test
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASS=postgres
+    depends_on:
+      - database
+
+volumes:
+  dbdata:
